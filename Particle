@@ -1,0 +1,49 @@
+import java.awt.*;
+
+public class Particle extends Brick {
+
+    static Particle[] particles;
+    private int dX,dY;
+
+    public Particle(int x, int y, int w, int h, Color color) {
+        super(x,y,w,h);
+    }
+
+    public static void makeParticles(Brick b) {
+        particles = new Particle[84];
+        int x = (int)b.getX();
+        int y = (int)b.getY();
+        int partPerRow = 12;
+        int rowPerArr = 6;
+        int n = 1;
+        for(int i = 0;i < particles.length; i++) {
+            particles[i] = new Particle(x,y,(int)b.getWidth()/partPerRow,(int)(b.getHeight()/rowPerArr),Color.blue);
+            x += (int)(b.getWidth()/partPerRow);
+            if(n% partPerRow == 0) {
+                x = (int) b.getX();
+                y += (int)(b.getHeight()/rowPerArr);
+            }
+            n++;
+        }
+
+    }
+    public void move() {
+        if(Math.random() < .5) {
+            dX = 1;
+        } else {
+            dX = -1;
+        }
+        if(Math.random() < .5) {
+            dY = 1;
+        } else {
+            dY = -1;
+        }
+        this.x += dX;
+        this.y += dY;
+    }
+
+
+    public static void drawParticles(Graphics2D pb) {
+        pb.setColor(Color.blue);
+        }
+    }
