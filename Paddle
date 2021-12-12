@@ -1,0 +1,32 @@
+import java.awt.*;
+import java.awt.event.KeyEvent;
+
+public class Paddle extends Rectangle {
+    private int dX = 4 ;
+    private int dYa, dYd;
+    public Paddle(int x, int y) {
+        super(x, y, 100, 10);
+    }
+    public void movePaddle(Ball b1) {
+        translate(0, b1.dY);
+    }
+    public void keyPressed() {
+        if(GDV5.KeysPressed[KeyEvent.VK_A]) {
+            dYd = 10;
+        }
+        if (GDV5.KeysPressed[KeyEvent.VK_D]) {
+            dYa = 10;
+        }
+    }
+    public void keyReleased() {
+        if(!GDV5.KeysPressed[KeyEvent.VK_A]) {
+            dYd = 0;
+        }if(!GDV5.KeysPressed[KeyEvent.VK_D]) {
+            dYa = 0;
+        }
+    }
+    public void move() {
+        this.translate(dYa - dYd,0);
+    }
+}
+
