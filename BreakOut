@@ -1,0 +1,144 @@
+import java.awt.*;
+import java.awt.event.KeyEvent;
+
+public class Breakout extends GDV5 {
+    Ball b = new Ball(10, 10);
+    Paddle p = new Paddle(250, 790);
+    PowerUp powerUp = new PowerUp(20,20);
+    PowerUp powerUp2 = new PowerUp(20,20);
+    int chanceSpawner =1;//for demonstration purposes this is set to 1, but it would be set to a 1 out of 20 chance of appearing
+    static int playerScore;
+    int lives = 5;
+    boolean flag = true;
+    public static void main(String[] args) {
+
+        Breakout b = new Breakout();
+        Brick.makeBricks(40);
+        b.start();
+    }
+
+    @Override
+    public void update() {
+        if (GDV5.KeysTyped[KeyEvent.VK_SPACE]) {
+            p.keyPressed();
+            p.keyReleased();
+            p.move();
+            b.move(b, p);
+            b.brickHit();
+
+        }
+    }
+    @Override
+    public void draw(Graphics2D win) {
+        win.setColor(Color.GREEN);
+        win.setFont(new Font("Courier", Font.BOLD, 35));
+        win.drawString("Welcome To Breakout", 80, 300);
+        win.setFont(new Font("Courier", Font.ITALIC, 20));
+        win.setColor(Color.RED);
+        win.drawString("Press SPACE to begin", 150, 340);
+        win.setFont(new Font("Courier", Font.HANGING_BASELINE, 35));
+        win.setColor(Color.blue);
+        win.drawString("Controls ", 190, 390);
+        win.drawString("A: Move Left", 155, 440);
+        win.drawString("D: Move Right", 145, 485);
+        win.setColor(Color.YELLOW);
+        win.setFont(new Font("Courier", Font.BOLD, 30));
+        win.drawString("Made By Azim Ahmed", 100, 540);
+
+        if (GDV5.KeysTyped[KeyEvent.VK_SPACE]) {
+            if (chanceSpawner == 1) {
+                win.setColor(Color.RED);
+                win.fill(powerUp);
+            }
+            if (p.x == powerUp.x) {
+                win.setColor(Color.BLACK);
+                win.fill(powerUp);
+                p.width = 200;
+
+            }
+//                int random = (int)(Math.random() * 25)+1;
+//            if (random == chanceSpawner) {
+//                Ball ball2 = new Ball(10, 10);
+//                win.setColor(Color.green);
+//                win.fill(powerUp2);
+//                powerUp2.x = GDV5.getMaxWindowX() - 20;
+//                powerUp2.y = GDV5.getMaxWindowY() - 20;
+//                if (p.y == powerUp2.y) {
+//                    ball2.x = GDV5.getMaxWindowX() / 2;
+//                    ball2.y = GDV5.getMaxWindowY() / 2;
+//                }
+//                if (ball2.x == GDV5.getMaxWindowX() / 2) {
+//                    win.setColor(Color.white);
+//                    win.fill(ball2);
+//                    ball2.dX = 5;
+//                    ball2.dY = 5;
+//                }
+//            }
+
+
+
+
+            setCleanCanvas(true);
+            win.setColor(Color.BLACK);
+            win.setFont(new Font("Courier", Font.BOLD, 35));
+            win.drawString("Welcome To Breakout", 80, 300);
+            win.setFont(new Font("Courier", Font.ITALIC, 20));
+            win.drawString("Press SPACE to begin", 150, 340);
+            win.setFont(new Font("Courier", Font.HANGING_BASELINE, 35));
+            win.drawString("Controls ", 190, 390);
+            win.drawString("A: Move Left", 155, 440);
+            win.drawString("D: Move Right", 145, 485);
+            win.setFont(new Font("Courier", Font.BOLD, 30));
+            win.drawString("Made By Azim Ahmed", 100, 540);
+            win.setColor(Color.white);
+            win.fill(b);
+            win.fill(p);
+            for (Brick b : Brick.bricks) {
+                win.setColor(Color.GREEN);
+                b.draw(win);
+            }
+            playerScore = b.score;
+            win.setColor(Color.gray);
+            win.setFont(new Font("Courier", Font.BOLD, 45));
+            win.drawString("" + playerScore,425,GDV5.getMaxWindowY()/2 +50);
+            win.drawString(""+lives,0,GDV5.getMaxWindowY()/2 + 50);
+            win.setColor(Color.white);
+            win.fill(b);
+            win.fill(p);
+            if(b.dY != 0 && b.dX != 0) {
+                flag = true;
+            }
+
+            if(b.dY == 0 && b.dX == 0 && flag) {
+                b.x = GDV5.getMaxWindowX() / 2;
+                b.y = GDV5.getMaxWindowY() / 2;
+                lives -= 1;
+                flag = false;
+            }
+            if(b.dX == 0 && b.dY == 0 && b.x == GDV5.getMaxWindowX()/2 && b.y == GDV5.getMaxWindowY()/2) {
+                if(lives == 0) {
+                    win.setColor(Color.BLACK);
+                    win.fill(b);
+                    win.fill(p);
+                    win.drawString("" + playerScore,425,GDV5.getMaxWindowY()/2 +50);
+                    win.drawString(""+lives,0,GDV5.getMaxWindowY()/2 + 50);
+                    win.setColor(Color.GREEN);
+                    win.drawString("GAME OVER!!!",100,GDV5.getMaxWindowY()/2);
+                    win.setColor(Color.RED);
+                    win.drawString("SCORE : " + playerScore,125,450);
+                } else if (lives > 0) {
+                win.setColor(Color.WHITE);
+                win.setFont(new Font("Courier", Font.BOLD, 30));
+                win.drawString("Press 'Enter' To Launch Ball", 45, GDV5.getMaxWindowY() / 2);
+                }
+            }
+                if (GDV5.KeysPressed[KeyEvent.VK_ENTER]) {
+                    b.dX = 5;
+                    b.dY = 5;
+                    flag = true;
+
+                }
+            }
+            }
+        }
+
