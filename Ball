@@ -1,0 +1,54 @@
+import java.awt.Rectangle;
+public class Ball extends Rectangle {
+    int dX, dY;
+    int brickResult;
+    int score;
+    public Ball(int w, int h) {
+        super(GDV5.getMaxWindowX() / 2, GDV5.getMaxWindowY() / 2, w, h);
+        dX = (int) (Math.random() * 10) + 5;
+        dY = (int) (Math.random() * 10) + 5;
+    }
+
+    public void move(Ball ball, Paddle paddle) {
+
+        if ((getY() + 10) > GDV5.getMaxWindowY()) {
+            dY = 0;
+            dX = 0;
+        }
+        if ((getX() + 10) > GDV5.getMaxWindowX()) {
+            dX = dX * -1;
+        }
+        if ((getX() + 10) < 0) {
+            dX = dX * -1;
+        }
+        if ((getY() + 10) < 0) {
+            dY = (int) (Math.random() * 10) + 5;
+        }
+        if (ball.intersects(paddle)) {
+            ball.dY = (int) (Math.random() * -10) - 5;
+
+        }
+
+        this.translate(dX, dY);
+    }
+
+    public void brickBounce(int result) {
+        if (result % 2 == 1) {
+            this.dY = -this.dY;
+        } else {
+            this.dX = -this.dX;
+        }
+
+    }
+
+    public void brickHit() {
+        for (int i = 0; i < Brick.bricks.length; i++) {
+            if (Brick.bricks[i].getVis() && this.intersects(Brick.bricks[i])) {
+                Brick.bricks[i].setIsVis();
+                brickResult = GDV5.collisionDirection(Brick.bricks[i], this, this.dX, this.dY);
+                score +=10;
+                brickBounce(brickResult);
+            }
+        }
+    }
+}
