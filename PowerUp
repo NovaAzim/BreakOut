@@ -1,0 +1,8 @@
+import java.awt.*;
+
+public class PowerUp extends Rectangle {
+
+    public PowerUp(int w, int h) {
+        super(10, GDV5.getMaxWindowY()-10, w, h);
+    }
+    }
